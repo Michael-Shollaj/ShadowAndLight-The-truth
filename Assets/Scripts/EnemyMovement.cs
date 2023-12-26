@@ -4,69 +4,57 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+
+    // Array of waypoints to walk from one to the next one
     [SerializeField]
-    private float _speed;
+    private Transform[] waypoints;
 
+    // Walk speed that can be set in Inspector
     [SerializeField]
-    private float _rotationSpeed;
+    private float moveSpeed = 2f;
 
-    private Rigidbody2D _rigidbody;
-    private Awareness _playerAwarenessController;
-    private Vector2 _targetDirection;
-    private float _changeDirectionCooldown;
+    // Index of current waypoint from which Enemy walks
+    // to the next one
+    private int waypointIndex = 0;
 
-    private void Awake()
+    // Use this for initialization
+    private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _playerAwarenessController = GetComponent<Awareness>();
-        _targetDirection = transform.up;
+
+        // Set position of Enemy as position of the first waypoint
+        transform.position = waypoints[waypointIndex].transform.position;
     }
 
-    private void FixedUpdate()
+    // Update is called once per frame
+    private void Update()
     {
-        UpdateTargetDirection();
-        RotateTowardsTarget();
-        SetVelocity();
+
+        // Move Enemy
+        Move();
     }
 
-    private void UpdateTargetDirection()
+    // Method that actually make Enemy walk
+    private void Move()
     {
-        HandleRandomDirectionChange();
-        HandlePlayerTargeting();
-    }
-
-    private void HandleRandomDirectionChange()
-    {
-        _changeDirectionCooldown -= Time.deltaTime;
-
-        if (_changeDirectionCooldown <= 0)
+        // Check if the enemy hasn't reached the last waypoint
+        if (waypointIndex <= waypoints.Length - 1)
         {
-            float angleChange = Random.Range(-90f, 90f);
-            Quaternion rotation = Quaternion.AngleAxis(angleChange, transform.forward);
-            _targetDirection = rotation * _targetDirection;
+            // Move the enemy towards the current waypoint
+            transform.position = Vector2.MoveTowards(transform.position,
+                waypoints[waypointIndex].transform.position,
+                moveSpeed * Time.deltaTime);
 
-            _changeDirectionCooldown = Random.Range(1f, 5f);
+            // If the enemy reaches the current waypoint, move to the next one
+            if (transform.position == waypoints[waypointIndex].transform.position)
+            {
+                waypointIndex += 1;
+            }
+        }
+        else
+        {
+            // Reset waypointIndex to 0 to loop back to the first waypoint
+            waypointIndex = 0;
         }
     }
 
-    private void HandlePlayerTargeting()
-    {
-        if (_playerAwarenessController.AwareOfPlayer)
-        {
-            _targetDirection = _playerAwarenessController.DirectionToPlayer;
-        }
-    }
-
-    private void RotateTowardsTarget()
-    {
-        Quaternion targetRotation = Quaternion.LookRotation(transform.forward, _targetDirection);
-        Quaternion rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-
-        _rigidbody.SetRotation(rotation);
-    }
-
-    private void SetVelocity()
-    {
-        _rigidbody.velocity = transform.up * _speed;
-    }
 }
