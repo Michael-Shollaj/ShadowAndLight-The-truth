@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
         interactionPromptText.gameObject.SetActive(leverNearby);
         if (leverNearby)
         {
-            interactionPromptText.text = "Press [E] to interact";
+            interactionPromptText.text = "Press [L] to interact with Lever";
         }
     }
 
