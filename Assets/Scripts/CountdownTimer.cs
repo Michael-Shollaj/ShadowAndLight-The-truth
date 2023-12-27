@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CountdownTimer : MonoBehaviour
 {
     public Text timerText;
     public GameObject gameOverPanel;
-    public float timeRemaining = 60; // set your countdown time in seconds
+    public float timeRemaining = 60; // Countdown time in seconds
+    public PlayerMovement playerMovement; // Reference to the PlayerMovement script
+    public int IncreaseTime;
 
     void Update()
     {
@@ -18,14 +21,11 @@ public class CountdownTimer : MonoBehaviour
         {
             timeRemaining = 0;
             gameOverPanel.SetActive(true); // Show the game over panel
-            
-            Time.timeScale = 0; 
+            if (playerMovement != null)
+            {
+                playerMovement.TriggerDeath(); // Trigger player's death
+            }
         }
-    }
-
-    public void IncreaseTime(float amount)
-    {
-        timeRemaining += amount;
     }
 
     void DisplayTime(float timeToDisplay)
@@ -36,4 +36,11 @@ public class CountdownTimer : MonoBehaviour
 
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
+
+    public void LoadLevel(int index)
+    {
+        SceneManager.LoadScene(index);
+        Time.timeScale = 1; // Reset the time scale
+    }
+
 }
