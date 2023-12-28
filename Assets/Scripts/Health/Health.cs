@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     public GameObject GameOverPanel;
     public Text respawnText; // UI Text to display remaining respawns
     public Animator anim;
+    public int currentHealth;
 
     private int deathCount = 0;
     public const int MaxDeaths = 3; // Maximum allowed deaths before game over
