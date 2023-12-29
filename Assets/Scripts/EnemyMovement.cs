@@ -5,45 +5,83 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField]
     private Transform[] waypoints;
     [SerializeField]
-    private float moveSpeed = 2f;
+    private float moveSpeed = 7f;
+    [SerializeField]
+    private Transform player;
+    [SerializeField]
+    private float detectionRadius = 5f;
+    [SerializeField]
+    private Transform specialWaypoint1;
+    [SerializeField]
+    private Transform specialWaypoint2;
 
-    private int currentWaypointIndex = 0;
+    private Rigidbody2D rb;
+    private Transform targetWaypoint;
+    private bool isHeadingToSpecialPoint = false;
 
     private void Start()
     {
-        if (waypoints.Length > 0)
-        {
-            // Set the initial position of the Enemy to the first waypoint
-            transform.position = waypoints[currentWaypointIndex].transform.position;
-        }
+        rb = GetComponent<Rigidbody2D>();
+        targetWaypoint = waypoints.Length > 0 ? waypoints[0] : null;
     }
 
     private void Update()
     {
+        if (targetWaypoint == null) return;
+
         Move();
+
+        if (IsPlayerClose() && !isHeadingToSpecialPoint)
+        {
+            SwitchToSpecialWaypoint();
+        }
     }
 
     private void Move()
     {
-        if (waypoints.Length == 0) return; // Check if there are waypoints
+        Vector2 newPosition = Vector2.MoveTowards(transform.position,
+            targetWaypoint.position, moveSpeed * Time.deltaTime);
+        rb.MovePosition(newPosition);
 
-        // Move the enemy towards the current waypoint
-        transform.position = Vector2.MoveTowards(transform.position,
-            waypoints[currentWaypointIndex].transform.position,
-            moveSpeed * Time.deltaTime);
-
-        // Check if the enemy has reached the current waypoint
-        if (transform.position == waypoints[currentWaypointIndex].transform.position)
+        if (Vector2.Distance(transform.position, targetWaypoint.position) < 0.1f)
         {
-            // Select a random waypoint index, different from the current one
-            int nextWaypointIndex;
-            do
-            {
-                nextWaypointIndex = Random.Range(0, waypoints.Length);
-            }
-            while (nextWaypointIndex == currentWaypointIndex);
-
-            currentWaypointIndex = nextWaypointIndex;
+            targetWaypoint = GetNextWaypoint();
+            isHeadingToSpecialPoint = false;
         }
+    }
+
+    private bool IsPlayerClose()
+    {
+        return Vector2.Distance(transform.position, player.position) < detectionRadius;
+    }
+
+    private void SwitchToSpecialWaypoint()
+    {
+        if (targetWaypoint == specialWaypoint1 || targetWaypoint == specialWaypoint2)
+        {
+            targetWaypoint = specialWaypoint1 == targetWaypoint ? specialWaypoint2 : specialWaypoint1;
+        }
+        else
+        {
+            targetWaypoint = Random.Range(0, 2) == 0 ? specialWaypoint1 : specialWaypoint2;
+        }
+        isHeadingToSpecialPoint = true;
+    }
+
+    private Transform GetNextWaypoint()
+    {
+        if (waypoints.Length == 1)
+        {
+            return waypoints[0];
+        }
+
+        int nextWaypointIndex;
+        do
+        {
+            nextWaypointIndex = Random.Range(0, waypoints.Length);
+        }
+        while (waypoints[nextWaypointIndex] == targetWaypoint);
+
+        return waypoints[nextWaypointIndex];
     }
 }

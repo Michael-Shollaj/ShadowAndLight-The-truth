@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        enemyPrefab.SetActive(true);
+        enemyPrefab.SetActive(false);
         enemySpawnText.gameObject.SetActive(false);
         StartCoroutine(SpawnEnemyAfterDelay());
     }
