@@ -17,10 +17,11 @@ public class FireShooter : MonoBehaviour
 
     void Update()
     {
-        if (enabled && Input.GetButtonDown("Fire1") && Time.time >= nextFireTime)
+        // Check if the Enter key is pressed and if the current time is greater than the next allowed fire time
+        if (enabled && Input.GetKeyDown(KeyCode.Return) && Time.time >= nextFireTime)
         {
-            nextFireTime = Time.time + 1f / fireRate;
-            Shoot();
+            nextFireTime = Time.time + 1f / fireRate; // Calculate the next allowed fire time based on the fire rate
+            Shoot(); // Call the Shoot method to instantiate and fire the projectile
         }
     }
 

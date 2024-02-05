@@ -14,7 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpingPower = 16f;
     [SerializeField] private float highJumpPower = 24f;
     private bool isFacingRight = true;
-    
+    private NPC_Controller npc;
+
     private bool isWallSliding;
     [SerializeField] private float wallSlidingSpeed = 2f;
 
@@ -85,59 +86,62 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
-
-        isCeilingAbove = Physics2D.OverlapCircle(ceilingCheck.position, ceilingCheckRadius, groundLayer);
-        isCrouching = Input.GetKey(KeyCode.S) || isCeilingAbove;
-
-        // Modify the isSprinting check to also require horizontal movement
-        isSprinting = Input.GetKey(KeyCode.LeftShift) && Mathf.Abs(horizontal) > 0 && !isCrouching && !isWallSliding;
-
-        anim.SetBool("isWalking", Mathf.Abs(horizontal) > 0.1f);
-        anim.SetBool("isSprinting", isSprinting);
-        anim.SetBool("isCrouching", isCrouching);
-        anim.SetBool("isJumping", !IsGrounded());
-        anim.SetBool("isWallSliding", isWallSliding);
-
-        if (Input.GetButtonDown("Jump"))
+        if (!inDialogue())
         {
-            JumpLogic();
-        }
+            horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (isSprinting && stamina > 0)
-        {
-            stamina -= staminaDecreasePerSecond * Time.deltaTime;
-            if (stamina < 0)
+            isCeilingAbove = Physics2D.OverlapCircle(ceilingCheck.position, ceilingCheckRadius, groundLayer);
+            isCrouching = Input.GetKey(KeyCode.S) || isCeilingAbove;
+
+            // Modify the isSprinting check to also require horizontal movement
+            isSprinting = Input.GetKey(KeyCode.LeftShift) && Mathf.Abs(horizontal) > 0 && !isCrouching && !isWallSliding;
+
+            anim.SetBool("isWalking", Mathf.Abs(horizontal) > 0.1f);
+            anim.SetBool("isSprinting", isSprinting);
+            anim.SetBool("isCrouching", isCrouching);
+            anim.SetBool("isJumping", !IsGrounded());
+            anim.SetBool("isWallSliding", isWallSliding);
+
+            if (Input.GetButtonDown("Jump"))
             {
-                stamina = 0;
-                // Ensure sprinting stops if stamina depletes
-                isSprinting = false;
+                JumpLogic();
             }
-        }
-        else if (!isSprinting && stamina < maxStamina)
-        {
-            stamina += staminaRegenPerSecond * Time.deltaTime;
-            if (stamina > maxStamina)
+
+            if (isSprinting && stamina > 0)
             {
-                stamina = maxStamina;
+                stamina -= staminaDecreasePerSecond * Time.deltaTime;
+                if (stamina < 0)
+                {
+                    stamina = 0;
+                    // Ensure sprinting stops if stamina depletes
+                    isSprinting = false;
+                }
             }
-        }
+            else if (!isSprinting && stamina < maxStamina)
+            {
+                stamina += staminaRegenPerSecond * Time.deltaTime;
+                if (stamina > maxStamina)
+                {
+                    stamina = maxStamina;
+                }
+            }
 
-        // Adjust the sprinting condition based on stamina and horizontal movement
-        isSprinting = isSprinting && stamina > sprintStaminaThreshold && Mathf.Abs(horizontal) > 0;
+            // Adjust the sprinting condition based on stamina and horizontal movement
+            isSprinting = isSprinting && stamina > sprintStaminaThreshold && Mathf.Abs(horizontal) > 0;
 
-        WallSlide();
-        WallClimb();
-        WallJump();
+            WallSlide();
+            WallClimb();
+            WallJump();
 
-        if (!isWallJumping && !isWallClimbing)
-        {
-            Flip();
-        }
+            if (!isWallJumping && !isWallClimbing)
+            {
+                Flip();
+            }
 
-        if (Input.GetKeyDown(KeyCode.R) && CanDoDash)
-        {
-            StartCoroutine(Dash());
+            if (Input.GetKeyDown(KeyCode.R) && CanDoDash)
+            {
+                StartCoroutine(Dash());
+            }
         }
     }
 
@@ -330,6 +334,16 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(TeleportRoutine());
         }
+
+
+        if (collision.gameObject.tag == "NPC")
+        {
+            npc = collision.gameObject.GetComponent<NPC_Controller>();
+
+            if (Input.GetKey(KeyCode.E))
+                npc.ActivateDialogue();
+        }
+
     }
 
     private IEnumerator TeleportRoutine()
@@ -340,6 +354,18 @@ public class PlayerMovement : MonoBehaviour
         SceneManager.LoadScene(nextSceneName); // Load the next scene
     }
 
+    private bool inDialogue()
+    {
+        if (npc != null)
+            return npc.DialogueActive();
+        else
+            return false;
+    }
 
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        npc = null;
+    }
 
 }
