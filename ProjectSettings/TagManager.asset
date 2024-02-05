@@ -4,22 +4,29 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Lever
-  - Enemy
-  - Light
+  - FxTemporaire
+  - OneWayPlatform
+  - Lantern
+  - Ground
+  - LightTrigger
+  - EvilShadow
+  - GoodShadow
+  - Audio
+  - Portal
+  - Bullet
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PostProcessing
   - Water
   - UI
-  - Lever
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Wall
+  - Enemy
+  - Ground
+  - Player
+  - Laser
+  - Map
   - 
   - 
   - 
