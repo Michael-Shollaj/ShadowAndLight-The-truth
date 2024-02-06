@@ -51,6 +51,7 @@ MonoBehaviour:
   DestroyEffect: 1
   DestroyBullet: 3
   damage: 10
+  Hit: {fileID: 8300000, guid: afed83c4df8a24a40aab1ccfba771869, type: 3}
 --- !u!58 &2651522712454830953
 CircleCollider2D:
   m_ObjectHideFlags: 0

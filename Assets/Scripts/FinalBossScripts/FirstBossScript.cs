@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FirstBossScript : MonoBehaviour
 {
+    public Animator anim;
     public Transform[] transforms;
     public GameObject flame;
 
@@ -12,13 +13,13 @@ public class FirstBossScript : MonoBehaviour
 
     public GameObject player;
 
-
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = transforms[1].position;
+        anim = GetComponent<Animator>();
+        transform.position = transforms[1].position; // Assuming you want the boss to start at a specific position
         countdown = timeToShoot;
-        countdownToTP = timeToTP;
+        countdownToTP = timeToTP; // Start the teleport countdown
     }
 
     // Update is called once per frame
@@ -26,13 +27,14 @@ public class FirstBossScript : MonoBehaviour
     {
         Flip();
         Countdowns();
-        Teleport();
+        // Removed the direct call to Teleport() from here
     }
 
     public void Teleport()
     {
         var initialPosition = Random.Range(0, transforms.Length);
         transform.position = transforms[initialPosition].position;
+        anim.SetTrigger("Teleport");
     }
 
     public void Countdowns()
@@ -43,26 +45,28 @@ public class FirstBossScript : MonoBehaviour
         if (countdown <= 0f)
         {
             ShootPlayer();
-            countdown = timeToShoot;
+            countdown = timeToShoot; // Reset the shooting countdown
         }
 
         if (countdownToTP <= 0f)
         {
-            countdownToTP = timeToTP;
-            Teleport();
+            Teleport(); // Only teleport when the countdown reaches zero
+            countdownToTP = timeToTP; // Reset the teleport countdown
         }
     }
 
     public void ShootPlayer()
     {
+        anim.SetTrigger("Shoot");
         GameObject spell = Instantiate(flame, transform.position, Quaternion.identity);
+        // Consider aiming the spell towards the player here
     }
 
     private void Flip()
     {
         if (transform.position.x > player.transform.position.x)
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            transform.localScale = new Vector3(-1, 1, 1); // Use localScale to flip instead of rotation for consistency
         else
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            transform.localScale = new Vector3(1, 1, 1);
     }
 }

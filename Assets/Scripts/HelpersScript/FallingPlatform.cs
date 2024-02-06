@@ -8,6 +8,7 @@ public class FallingPlatform : MonoBehaviour
 	Rigidbody2D rb;
 	Vector2 initialPosition;
 	bool platformMovingBack;
+	[SerializeField] private AudioClip FalligStoneFX;
 
 	// Use this for initialization
 	void Start()
@@ -35,6 +36,7 @@ public class FallingPlatform : MonoBehaviour
 
 	void DropPlatform()
 	{
+		SoundFXManager.instance.PlaySoundFXClip(FalligStoneFX, transform, 1f);
 		rb.isKinematic = false;
 		Invoke("GetPlatformBack", 1f);
 	}

@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     public float DestroyEffect;
     public float DestroyBullet;
     public int damage; // Damage that this projectile will deal
+    [SerializeField] private AudioClip Hit;
 
     void Update()
     {
@@ -18,6 +19,7 @@ public class Projectile : MonoBehaviour
     {
         GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
         Destroy(effect, DestroyEffect);
+        SoundFXManager.instance.PlaySoundFXClip(Hit, transform, 1f);
 
         // Check if the object we collided with has a HealthShadow component
         HealthShadow health = collision.GetComponent<HealthShadow>();

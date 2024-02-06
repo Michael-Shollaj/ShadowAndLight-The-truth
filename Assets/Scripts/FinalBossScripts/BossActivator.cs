@@ -6,6 +6,8 @@ public class BossActivator : MonoBehaviour
 {
     public GameObject Boss;
     public GameObject Wall;
+    public PlayerMovement player;
+    [SerializeField] private AudioClip DarkVoice;
 
     private void Start()
     {
@@ -19,8 +21,18 @@ public class BossActivator : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             BossUI.instance.BossActivator();
-            Boss.SetActive(true);
             Wall.SetActive(true);
+            StartCoroutine(WaitForBoss());
         }
+    }
+
+    IEnumerator WaitForBoss()
+    {
+        Boss.SetActive(false);
+        SoundFXManager.instance.PlaySoundFXClip(DarkVoice, transform, 1f);
+        yield return new WaitForSeconds(18f);
+        Boss.SetActive(true);
+        Destroy(gameObject);
+
     }
 }

@@ -300,6 +300,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  JoinPlayerSFX: {fileID: 8300000, guid: 756314d14abd7e3409e1469e95f175f5, type: 3}
+  CollectSoulEffect: {fileID: 100000, guid: 1bc4a709f24528b40984e62f32e398a0, type: 3}
 --- !u!50 &5022179411770162938
 Rigidbody2D:
   serializedVersion: 4

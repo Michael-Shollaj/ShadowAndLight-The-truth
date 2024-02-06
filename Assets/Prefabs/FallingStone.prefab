@@ -259,4 +259,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98746b6f961d592419e72de9665cd3f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Smoke: {fileID: 3597571606124713256, guid: 51a9aa87b4169b745b4b80b1fe33559e, type: 3}
+  Smoke: {fileID: 4425129568585013132, guid: bbeeb0ddc21369746aaaae5c5c1c09cf, type: 3}
+  StoneFX: {fileID: 8300000, guid: 90d163afcda75e94b8e16bf0c93540db, type: 3}

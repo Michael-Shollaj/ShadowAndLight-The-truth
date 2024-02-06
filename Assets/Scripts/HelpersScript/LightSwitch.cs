@@ -12,6 +12,7 @@ public class LightSwitch : MonoBehaviour
     public GameObject InteractButton;
     public GameObject Backgroundoff;
     public GameObject Backgroundon;
+    [SerializeField] private AudioClip LightFireON;
 
     public GameObject happySprite;
 
@@ -53,6 +54,8 @@ public class LightSwitch : MonoBehaviour
             LightonSprite.SetActive(true);
             Backgroundoff.SetActive(false);
             Backgroundon.SetActive(true);
+            SoundFXManager.instance.PlaySoundFXClip(LightFireON, transform, 1f);
+
 
             if (gameManager != null)
             {

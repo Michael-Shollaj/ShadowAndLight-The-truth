@@ -7,7 +7,7 @@ public class Door : MonoBehaviour
     private PlayerMovement thePlayer;
     public bool doorOpen, waitingToOpen;
     public GameObject Effect;
-
+    [SerializeField] private AudioClip DoorOpenFX;
 
     public Animator anim;
 
@@ -31,7 +31,7 @@ public class Door : MonoBehaviour
                 doorOpen = true;
                 anim.SetTrigger("Open");
                 thePlayer.followingKey.gameObject.SetActive(false);
-                
+                SoundFXManager.instance.PlaySoundFXClip(DoorOpenFX, transform, 1f);
                 thePlayer.followingKey = null;
                 Effect.SetActive(true);
                 Debug.Log("DoorOpen");

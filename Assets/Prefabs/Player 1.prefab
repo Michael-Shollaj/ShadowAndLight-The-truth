@@ -2384,6 +2384,7 @@ GameObject:
   - component: {fileID: 1188814505}
   - component: {fileID: 1584466131}
   - component: {fileID: 1584466136}
+  - component: {fileID: 1289072261}
   m_Layer: 9
   m_Name: Player 1
   m_TagString: Player
@@ -2461,6 +2462,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: BossScene
+  WinFX: {fileID: 8300000, guid: d70776c3e90b5f24fad666a77b39c2da, type: 3}
+  steps:
+  - {fileID: 8300000, guid: add570d7ed31f42459ffd7ff76af6b98, type: 3}
+  - {fileID: 8300000, guid: e55cb339eaa725d47a2047eb3d4e6f10, type: 3}
+  - {fileID: 8300000, guid: 6c1c3e47b2b80124db64f0a8fb94ef5f, type: 3}
+  - {fileID: 8300000, guid: fb7813adaf340064cb41c7b8abb113db, type: 3}
+  WallJumpFX: {fileID: 8300000, guid: f277611cc6e8b8e4d8ec7518c338a678, type: 3}
+  stepRate: 0.5
   speed: 5
   currentspeed: 8
   sprintSpeed: 10
@@ -2470,6 +2479,7 @@ MonoBehaviour:
   wallJumpingTime: 0.2
   wallJumpingDuration: 0.4
   wallJumpingPower: {x: 8, y: 16}
+  JumpFX: {fileID: 8300000, guid: a7e531bf0699a804a9d7060c88da3dce, type: 3}
   dustEffect: {fileID: 7863842705634725199}
   followingKey: {fileID: 0}
   crouchSpeed: 2
@@ -2556,6 +2566,8 @@ MonoBehaviour:
   fullHeart: {fileID: 21300000, guid: c8272e803293ef84d9c62827d7801b9f, type: 3}
   emptyHeart: {fileID: 21300000, guid: c7ba216250b05ce44a34561f2024c95a, type: 3}
   DeathPanel: {fileID: 0}
+  DeathFX: {fileID: 8300000, guid: 10b8d3b2f9261bd4c92d3bacd8a25ab1, type: 3}
+  SpikeFX: {fileID: 8300000, guid: 56904f8512ca6e34bb03cd530cee16c7, type: 3}
 --- !u!114 &1188814505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2603,6 +2615,103 @@ MonoBehaviour:
   bulletForce: 20
   anim: {fileID: 7864633758810370610}
   fireRate: 2.5
+  ShootFX: {fileID: 8300000, guid: 92d35fe1c59bbd14eaee9e3d3b54cea7, type: 3}
+--- !u!82 &1289072261
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7864633758810370611}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 98a936ad0fe5bb84daa38413a6470f83, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7864633758937885566
 GameObject:
   m_ObjectHideFlags: 0

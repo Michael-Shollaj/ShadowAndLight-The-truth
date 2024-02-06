@@ -170,8 +170,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
-  deathEffect: {fileID: 2558704528084758968, guid: fe2be570e44e18845879399b7b2480c6, type: 3}
+  deathEffect: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
   soulEffect: {fileID: 5022179411770162943, guid: 55bc398d3399f6344b1a7e79f7902bb7, type: 3}
+  hurtSound: {fileID: 8300000, guid: 8979539a5a6d15b428b6f5c64092d6a9, type: 3}
+  changeToSoul: {fileID: 8300000, guid: 8979539a5a6d15b428b6f5c64092d6a9, type: 3}
 --- !u!1 &2623793371931627172
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,7 +566,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2623793372510784788}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -17.76, y: -43.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

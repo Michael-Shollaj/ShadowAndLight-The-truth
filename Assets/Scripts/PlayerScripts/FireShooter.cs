@@ -9,6 +9,7 @@ public class FireShooter : MonoBehaviour
     public float fireRate = 1f; // Rate of fire
 
     private float nextFireTime = 0f; // Time until next fire is allowed
+    [SerializeField] private AudioClip ShootFX;
 
     private void Start()
     {
@@ -28,7 +29,7 @@ public class FireShooter : MonoBehaviour
     void Shoot()
     {
         anim.SetTrigger("Shoot");
-
+        SoundFXManager.instance.PlaySoundFXClip(ShootFX, transform, 1f);
         GameObject bullet = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 

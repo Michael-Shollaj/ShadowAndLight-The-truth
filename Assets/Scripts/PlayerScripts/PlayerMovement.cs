@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private string nextSceneName = "NextScene";
+    [SerializeField] private AudioClip WinFX;
+    [SerializeField] private AudioClip[] steps;
+    [SerializeField] private AudioClip WallJumpFX;
+    [SerializeField] private float stepRate = .5f; // Time between steps
+    private float nextStepTime = 2f;
 
     private float horizontal;
     [SerializeField] private float speed = 8f;
@@ -25,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpingCounter;
     [SerializeField] private float wallJumpingDuration = 0.4f;
     [SerializeField] private Vector2 wallJumpingPower = new Vector2(8f, 16f);
+    [SerializeField] private AudioClip JumpFX;
 
     [SerializeField] private GameObject dustEffect; // Assign your dust particle effect GameObject in the inspector
 
@@ -166,9 +172,23 @@ public class PlayerMovement : MonoBehaviour
         if (!isWallJumping && !isWallClimbing)
         {
             MovementLogic();
+            PlayFootstepSounds();
         }
 
         CheckForLanding();
+    }
+
+    private void PlayFootstepSounds()
+    {
+        // Check if the player is on the ground and moving
+        if (IsGrounded() && Mathf.Abs(horizontal) > 0.1f && Time.time >= nextStepTime)
+        {
+            nextStepTime = Time.time + stepRate;
+
+            // Choose a random footstep sound to play
+            AudioClip clip = steps[Random.Range(0, steps.Length)];
+            SoundFXManager.instance.PlayRandomSoundFXClip(steps, transform, 1f);
+        }
     }
 
 
@@ -180,12 +200,14 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             anim.SetTrigger("Jump");
             canDoubleJump = true;
+            SoundFXManager.instance.PlaySoundFXClip(JumpFX, transform, 1f);
         }
         else if (canDoubleJump && !isWallJumping)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
             anim.SetTrigger("DoubleJump");
             canDoubleJump = false;
+            SoundFXManager.instance.PlaySoundFXClip(JumpFX, transform, 1f);
         }
     }
 
@@ -245,6 +267,7 @@ public class PlayerMovement : MonoBehaviour
             isWallJumping = true;
             wallJumpingDirection = -transform.localScale.x;
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            SoundFXManager.instance.PlaySoundFXClip(WallJumpFX, transform, 1f);
 
             // Flip if necessary
             if (transform.localScale.x != wallJumpingDirection)
@@ -263,6 +286,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 float currentSpeed = isCrouching ? crouchSpeed : (isSprinting ? sprintSpeed : speed);
                 rb.velocity = new Vector2(horizontal * currentSpeed, rb.velocity.y);
+                
             }
         }
 
@@ -352,6 +376,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(.5f); // Wait for the animation to finish, adjust time as needed
 
         SceneManager.LoadScene(nextSceneName); // Load the next scene
+        SoundFXManager.instance.PlaySoundFXClip(WinFX, transform, 1f);
     }
 
     private bool inDialogue()

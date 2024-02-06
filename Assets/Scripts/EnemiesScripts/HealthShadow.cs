@@ -7,6 +7,9 @@ public class HealthShadow : MonoBehaviour
     public int health;
     public GameObject deathEffect;
     public GameObject soulEffect; // Effect for when the shadow turns into a soul
+    [SerializeField] private AudioClip hurtSound;
+    [SerializeField] private AudioClip changeToSoul;
+
 
     private float lightExposureTime = 0f;
     private bool isInLight = false;
@@ -61,6 +64,8 @@ public class HealthShadow : MonoBehaviour
 
         if (isGoodShadow)
         {
+
+            SoundFXManager.instance.PlaySoundFXClip(changeToSoul, transform, 1f);
             // Turn into a soul and join the player
             Instantiate(soulEffect, transform.position, Quaternion.identity);
             // Implement logic for joining the player
@@ -78,6 +83,7 @@ public class HealthShadow : MonoBehaviour
         if (isInLight)
         {
             health -= damage;
+            SoundFXManager.instance.PlaySoundFXClip(hurtSound, transform, 1f);
         }
     }
 }

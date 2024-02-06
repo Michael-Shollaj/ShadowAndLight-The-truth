@@ -6,6 +6,9 @@ public class Soul : MonoBehaviour
 {
     public float speed = 5f;
     private Transform playerTransform;
+    [SerializeField] private AudioClip JoinPlayerSFX;
+    [SerializeField] private GameObject CollectSoulEffect;
+
 
     private void Start()
     {
@@ -28,6 +31,8 @@ public class Soul : MonoBehaviour
             if (Vector2.Distance(transform.position, playerTransform.position) < 0.1f)
             {
                 GameManager.instance.AddSoul();
+                SoundFXManager.instance.PlaySoundFXClip(JoinPlayerSFX, transform, 1f);
+                Instantiate(CollectSoulEffect, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }
         }

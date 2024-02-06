@@ -14,6 +14,8 @@ public class PlayerHealth : MonoBehaviour
     public Sprite emptyHeart;
     private bool isDeathByLight;
     public GameObject DeathPanel;
+    [SerializeField] private AudioClip DeathFX;
+    [SerializeField] private AudioClip SpikeFX;
 
     // Start is called before the first frame update
     void Start()
@@ -82,6 +84,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage, bool isLightDamage = false)
     {
         health -= damage;
+        SoundFXManager.instance.PlaySoundFXClip(SpikeFX, transform, 1f);
         Instantiate(HurtEffect, transform.position, Quaternion.identity);
         StartCoroutine(DamageAnimation());
         isDeathByLight = isLightDamage; // Update the death cause
@@ -108,6 +111,8 @@ public class PlayerHealth : MonoBehaviour
     private IEnumerator HandleDeath()
     {
         anim.SetTrigger("death"); // Play death animation
+        SoundFXManager.instance.PlaySoundFXClip(DeathFX, transform, 1f);
+        SoundFXManager.instance.PlaySoundFXClip(SpikeFX, transform, 1f);
         yield return new WaitForSeconds(.1f); // Wait for the animation to finish
         anim.Play("Idle");
         // After animation, call GameManager to respawn player

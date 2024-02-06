@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b064ba4b1456343b9e222543e1dadd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FalligStoneFX: {fileID: 8300000, guid: e951a3fbfe2574e48aacc39f54098fbd, type: 3}
 --- !u!1 &1957916216657118003
 GameObject:
   m_ObjectHideFlags: 0
